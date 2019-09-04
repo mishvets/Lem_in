@@ -1,16 +1,14 @@
-	/* ************************************************************************** */
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strsplit.c                                      :+:      :+:    :+:   */
+/*   ft_strsplit_max.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mshvets <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/20 16:15:38 by mshvets           #+#    #+#             */
-/*   Updated: 2018/11/27 15:57:18 by mshvets          ###   ########.fr       */
+/*   Created: 2019/09/04 21:06:08 by mshvets           #+#    #+#             */
+/*   Updated: 2019/09/04 21:06:10 by mshvets          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-#include "libft.h"
 
 static char		*ft_new(const char *s, char **end, char c)
 {
@@ -23,26 +21,19 @@ static char		*ft_new(const char *s, char **end, char c)
 	return (arr);
 }
 
-static void		ft_strdeli(char **arr, size_t i)
-{
-	while (i-- > 0)
-		ft_strdel(&arr[i]);
-	free(arr);
-}
-
-char			**ft_strsplit(char const *s, char c)
+char			**ft_strsplit(char const *s, char c, int num_wrd)
 {
 	char	**arr;
 	char	*end;
-	size_t	count;
 	size_t	i;
 
 	if (!(i = 0) && !s)
 		return (NULL);
 	if (!(arr = (char **)ft_memalloc(sizeof(*arr) * (ft_cntwrd(s, c) + 1))))
 		return (NULL);
-	count = ft_cntwrd(s, c);
-	while (*s && i < count)
+	if (num_wrd != ft_cntwrd(s, c))
+		return (NULL);
+	while (*s && i < num_wrd)
 	{
 		if (*s != c)
 		{

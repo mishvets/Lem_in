@@ -25,7 +25,7 @@ LIB_DIR     = ./
 
 SRC             := $(SRC_DIR)main.c
 SRC             += $(SRC_DIR)parsing.c
-SRC             += $(SRC_DIR)clean_memory.c
+#SRC             += $(SRC_DIR)clean_memory.c
 
 # project object files
 
@@ -60,7 +60,7 @@ CC              := gcc
 all: $(LIB) $(NAME)
 
 $(NAME): $(OBJ)
-	@$(CC) $(OBJ) $(LINK_FLAGS) -o $(NAME)
+	@$(CC) $(OBJ) $(LINK_FLAGS) -o $(NAME) -fsanitize=undefined
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 	@$(CC) $(CC_FLAGS) -c $< -o $@ $(HEADER_FLAGS)
