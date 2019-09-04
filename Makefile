@@ -24,6 +24,8 @@ LIB_DIR     = ./
 # project source files
 
 SRC             := $(SRC_DIR)main.c
+SRC             += $(SRC_DIR)parsing.c
+SRC             += $(SRC_DIR)clean_memory.c
 
 # project object files
 
@@ -46,7 +48,7 @@ LINK_FLAGS      := $(LIBFT_FLAGS)
 
 # header flags
 
-HEAD            := $(INC_DIR)lem_in.h
+HEAD            := $(INC_DIR)lem-in.h
 HEADER_FLAGS    := -I $(INC_DIR) -I $(LIBFT_INC)
 
 # compiler
