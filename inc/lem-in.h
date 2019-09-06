@@ -15,13 +15,22 @@
 
 # include "../libft/libft.h"
 
-typedef struct	s_general
+typedef struct			s_general
 {
-	int			num_ants;
-	char		*start_room;
-	char 		*finish_room;
-	char		**room_name;
-}				t_general;
+	int					num_ants;
+	char				*start_room;
+	char 				*finish_room;
+	char				**room_name;
+}						t_general;
+
+typedef struct			s_room_lst
+{
+	int					num_room;
+	char				*name_room;
+	int 				x;
+	int					y;
+	struct s_room_lst	*next;
+}						t_room_lst;
 
 //typedef struct	s_ptr
 //{
@@ -29,6 +38,8 @@ typedef struct	s_general
 //	t_general	**farm_ptr;
 //}				t_ptr;
 
-int				ft_parse(char *line, int fd, t_general *farm);
+int						ft_parse(int fd, t_general *farm);
+void					ft_strdeli(char **arr, size_t i);
+int						ft_room_read(char *line, t_room_lst **r_lst);
 //int				ft_memclean(t_ptr *ptr);
 #endif
