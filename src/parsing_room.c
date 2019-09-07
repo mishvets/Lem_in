@@ -26,6 +26,7 @@ t_room_lst	*ft_lstnewroom(char *name, int x, int y)
 	new->x = x;
 	new->y = y;
 	new->next = NULL;
+	new->link = NULL;
 	return (new);
 }
 
@@ -93,5 +94,36 @@ int			ft_room_read(char *line, t_room_lst **r_lst)
 	new = ft_lstnewroom(tmp[0], ft_atoi(tmp[1]), ft_atoi(tmp[2]));
 	ft_lstaddroom(r_lst, new);
 	ft_strdeli(tmp, 3);
+	return (0);
+}
+
+int 		ft_room_prepeare(t_room_lst **r_lst, t_general *farm)
+{
+	int 		i;
+	t_room_lst	*crawler;
+
+	crawler = (*r_lst);
+	i = 0;
+	if (farm->start_room == NULL || farm->finish_room == NULL)
+	{
+		ft_printf("Error: each map must have 'start' and 'end'.\n");
+		return (1);
+	}
+	while (crawler)
+	{
+		crawler->num_room = i++;
+		crawler = crawler->next;
+	}
+	if (!(farm->r_arr = (t_room_lst **)ft_memalloc(sizeof(farm->r_arr) * i)))
+		return (1);
+	i = 0;
+	while (*r_lst)
+	{
+		crawler = (*r_lst);
+		(*r_lst) = (*r_lst)->next;
+//		crawler->next = NULL;
+		farm->r_arr[i++] = crawler;
+	}
+
 	return (0);
 }

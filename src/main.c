@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../inc/lem-in.h"
+#include <fcntl.h> //del!
 
 //static void ft_ptrinit(t_ptr *ptr, t_general *farm, char *line)
 //{
@@ -33,7 +34,8 @@ static int		ft_memclean(t_general *farm)
 	return (0);
 }
 
-int		main(void)
+int		main(int argc, char **argv) //main(void)
+//int		main(void)
 {
 	int				fd;
 //	char			*line;
@@ -44,10 +46,19 @@ int		main(void)
 	if (!(farm = (t_general *)ft_memalloc(sizeof(t_general))))
 		return (1);
 //	ft_ptrinit(&ptr, *farm, *line);
-	if (!(fd = 0) && ft_parse(fd, farm))
+	if ((fd = open(argv[1], O_RDONLY)) < 0 || argc < 0) // del!
+	{
+		ft_printf("error read from file\n");
+		return 0;
+	}
+//	fd = 0;
+	if (ft_parse(fd, farm))
+	{
 		exit(ft_memclean(farm));
+	}
 	ft_printf("start - %s\n", farm->start_room);
 	ft_printf("finish - %s\n", farm->finish_room);
+	ft_lst_room_del(&farm->r_arr[0]);
 	system("leaks -q lem-in");
 	return (0);
 }
