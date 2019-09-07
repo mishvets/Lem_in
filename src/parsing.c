@@ -148,7 +148,12 @@ int ft_parse(int fd, t_general *farm)
 		{
 			if (link_start)
 			{
-//				ft_links();
+				if (ft_link_read(line, farm))
+				{
+					ft_strdel(&line);
+					ft_parserror(r_lst);
+					return (1);
+				}
 			}
 
 			else

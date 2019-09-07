@@ -34,6 +34,7 @@ typedef struct			s_room_lst
 typedef struct			s_general
 {
 	int					num_ants;
+	int 				num_rooms;
 	char				*start_room;
 	char 				*finish_room;
 	t_room_lst			**r_arr;
@@ -50,5 +51,6 @@ void					ft_strdeli(char **arr, size_t i);
 int						ft_room_read(char *line, t_room_lst **r_lst);
 int						ft_room_prepeare(t_room_lst **r_lst, t_general *farm);
 void					ft_lst_room_del(t_room_lst **alst);
+int						ft_link_read(char *line, t_general *farm);
 //int				ft_memclean(t_ptr *ptr);
 #endif

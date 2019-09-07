@@ -114,6 +114,7 @@ int 		ft_room_prepeare(t_room_lst **r_lst, t_general *farm)
 		crawler->num_room = i++;
 		crawler = crawler->next;
 	}
+	farm->num_rooms = i;
 	if (!(farm->r_arr = (t_room_lst **)ft_memalloc(sizeof(farm->r_arr) * i)))
 		return (1);
 	i = 0;

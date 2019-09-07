@@ -26,6 +26,7 @@ LIB_DIR     = ./
 SRC             := $(SRC_DIR)main.c
 SRC             += $(SRC_DIR)parsing.c
 SRC             += $(SRC_DIR)parsing_room.c
+SRC             += $(SRC_DIR)parsing_link.c
 SRC             += $(SRC_DIR)ft_strdeli.c
 
 # project object files
