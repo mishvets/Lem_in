@@ -47,7 +47,7 @@ typedef struct			s_general
 //}				t_ptr;
 
 int						ft_parse(int fd, t_general *farm);
-void					ft_strdeli(char **arr, size_t i);
+//void					ft_strdeli(char **arr, size_t i);
 int						ft_room_read(char *line, t_room_lst **r_lst);
 int						ft_room_prepeare(t_room_lst **r_lst, t_general *farm);
 void					ft_lst_room_del(t_room_lst **alst);

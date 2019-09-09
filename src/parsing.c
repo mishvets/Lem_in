@@ -33,17 +33,17 @@ static int ft_read_num_ants(char *line, int fd, t_general *farm)
 
 
 
-static int ft_commands(char *line, int fd, t_general *farm, t_room_lst **r_lst)
+static int ft_commands(char **line, int fd, t_general *farm, t_room_lst **r_lst)
 {
-	if (!ft_strncmp(line, "##start", 7))
+	if (!ft_strncmp(*line, "##start", 7))
 	{
 //		ft_printf("%s1\n", line);
-		ft_strdel(&line);
-		if (farm->start_room == NULL && get_next_line(fd, &line) > 0)
+		ft_strdel(line);
+		if (farm->start_room == NULL && get_next_line(fd, line) > 0)
 		{
-			if (!ft_room_read(line, r_lst))
+			if (!ft_room_read(*line, r_lst))
 			{
-				if ((farm->start_room = ft_strsub(line, 0, (ft_strchr(line, ' ') - line))))
+				if ((farm->start_room = ft_strsub(*line, 0, (ft_strchr(*line, ' ') - *line))))
 					return (0);
 			}
 			return (1);
@@ -55,15 +55,15 @@ static int ft_commands(char *line, int fd, t_general *farm, t_room_lst **r_lst)
 		}
 //			exit (ft_memclean(ptr));
 	}
-	else if (!ft_strncmp(line, "##end", 5))
+	else if (!ft_strncmp(*line, "##end", 5))
 	{
 //		ft_printf("%s2\n", line);
-		ft_strdel(&line);
-		if (farm->finish_room == NULL && get_next_line(fd, &line) > 0)
+		ft_strdel(line);
+		if (farm->finish_room == NULL && get_next_line(fd, line) > 0)
 		{
-			if (!ft_room_read(line, r_lst))
+			if (!ft_room_read(*line, r_lst))
 			{
-				if ((farm->finish_room = ft_strsub(line, 0, (ft_strchr(line, ' ') - line))))
+				if ((farm->finish_room = ft_strsub(*line, 0, (ft_strchr(*line, ' ') - *line))))
 					return (0);
 			}
 			return (1);
@@ -92,9 +92,11 @@ void	ft_lst_room_del(t_room_lst **alst)
 	}
 }
 
-void ft_parserror(t_room_lst *r_lst)
+void ft_parserror(t_room_lst *r_lst, char **line)
 {
 //		ft_printf("%s\n", error);
+		if (line)
+			ft_strdel(line);
 		if (r_lst)
 		{
 //			ft_printf("r_lst not empty!\n");
@@ -136,10 +138,9 @@ int ft_parse(int fd, t_general *farm)
 		if (!ft_strncmp(line, "#", 1))
 		{
 			if (!ft_strncmp(line, "##", 2))
-				if(ft_commands(line, fd, farm, &r_lst))
+				if(ft_commands(&line, fd, farm, &r_lst))
 				{
-					ft_strdel(&line);
-					ft_parserror(r_lst);
+					ft_parserror(r_lst, &line);
 					return (1);
 				}
 		}
@@ -150,8 +151,7 @@ int ft_parse(int fd, t_general *farm)
 			{
 				if (ft_link_read(line, farm))
 				{
-					ft_strdel(&line);
-					ft_parserror(r_lst);
+					ft_parserror(r_lst, &line);
 					return (1);
 				}
 			}
@@ -160,8 +160,7 @@ int ft_parse(int fd, t_general *farm)
 			{
 				if (ft_room_read(line, &r_lst))
 				{
-					ft_strdel(&line);
-					ft_parserror(r_lst);
+					ft_parserror(r_lst, &line);
 					return (1);
 				}
 //				while (ft_strchr(line, "-") == NULL)

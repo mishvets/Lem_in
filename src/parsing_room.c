@@ -79,7 +79,7 @@ int			ft_room_read(char *line, t_room_lst **r_lst)
 	char		**tmp;
 	t_room_lst	*new;
 
-	if (ft_cntwrd(line, ' ') != 3)
+	if (ft_cntwrd(line, ' ') != 3 || ft_cntchr(line, ' ') != 2)
 	{
 		ft_printf("Error: bad number of vertex's arguments "
 			"in string '%s'.\n", line);
