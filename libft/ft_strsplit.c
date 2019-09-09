@@ -23,12 +23,12 @@ static char		*ft_new(const char *s, char **end, char c)
 	return (arr);
 }
 
-static void		ft_strdeli(char **arr, size_t i)
-{
-	while (i-- > 0)
-		ft_strdel(&arr[i]);
-	free(arr);
-}
+//static void		ft_strdeli(char **arr, size_t i)
+//{
+//	while (i-- > 0)
+//		ft_strdel(&arr[i]);
+//	free(arr);
+//}
 
 char			**ft_strsplit(char const *s, char c)
 {

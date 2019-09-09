@@ -1,20 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdeli.c                                       :+:      :+:    :+:   */
+/*   ft_cntchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mshvets <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/04 21:04:01 by mshvets           #+#    #+#             */
-/*   Updated: 2019/09/04 21:04:04 by mshvets          ###   ########.fr       */
+/*   Created: 2019/09/09 18:43:18 by mshvets           #+#    #+#             */
+/*   Updated: 2019/09/09 18:43:20 by mshvets          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/lem-in.h"
+#include "libft.h"
 
-void		ft_strdeli(char **arr, size_t i)
+size_t	ft_cntchr(const char *str, char c)
 {
-	while (i-- > 0)
-		ft_strdel(&arr[i]);
-	free(arr);
+	size_t	count;
+
+	count = 0;
+	while (*str)
+	{
+		if (*str == c)
+			++count;
+		++str;
+	}
+	return (count);
 }

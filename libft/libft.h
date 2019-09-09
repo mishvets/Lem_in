@@ -145,4 +145,7 @@ char				*ft_print_str(t_name spc, va_list ap, char *str);
 char				*ft_print_uox(t_name spc, va_list ap, char *str);
 int					ft_check_sign_double(double num);
 
+size_t				ft_cntchr(const char *str, char c);
+void				ft_strdeli(char **arr, size_t i);
+
 #endif
