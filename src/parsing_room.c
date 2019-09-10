@@ -23,7 +23,7 @@ t_room_lst	*ft_lstnewroom(char *name, int x, int y)
 		free(new);
 		return (NULL);
 	}
-	new->x = x;
+	new->x_level = x;
 	new->y = y;
 	new->next = NULL;
 	new->link = NULL;
@@ -64,7 +64,7 @@ int			ft_valid_room(char **tmp, t_room_lst *r_lst, char *line)
 			ft_printf("Error: vertex names must be unique.\n");
 			return (1);
 		}
-		if (ft_atoi(tmp[1]) == r_lst->x && ft_atoi(tmp[2]) == r_lst->y)
+		if (ft_atoi(tmp[1]) == r_lst->x_level && ft_atoi(tmp[2]) == r_lst->y)
 		{
 			ft_printf("Error: vertex coordinates must be unique.\n");
 			return (1);

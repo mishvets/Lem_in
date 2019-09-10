@@ -72,21 +72,6 @@ static int ft_commands(char **line, int fd, t_general *farm, t_room_lst **r_lst)
 	return (0);
 }
 
-void	ft_lst_room_del(t_room_lst **alst)
-{
-	t_room_lst *crawler;
-
-	while (*alst)
-	{
-		crawler = (*alst);
-		*alst = (*alst)->next;
-		ft_printf("Name: %s; n_room - %i; x - %i; y - %i. -->\n", crawler->name_room, crawler->num_room, crawler->x, crawler->y);//
-		ft_strdel(&crawler->name_room);
-		free(crawler);
-		crawler = NULL;
-	}
-}
-
 void ft_parserror(t_room_lst *r_lst, char **line)
 {
 //		ft_printf("%s\n", error);

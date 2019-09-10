@@ -25,7 +25,7 @@ typedef struct			s_room_lst
 {
 	int					num_room;
 	char				*name_room;
-	int 				x;
+	int 				x_level;
 	int					y;
 	struct s_room_lst	*next;
 	t_link				*link;
@@ -60,7 +60,10 @@ int						ft_parse(int fd, t_general *farm);
 int						ft_room_read(char *line, t_room_lst **r_lst);
 int						ft_room_prepeare(t_room_lst **r_lst, t_general *farm);
 void					ft_lst_room_del(t_room_lst **alst);
+int						ft_link_add(t_link **list, int num_room);
 int						ft_link_read(char *line, t_general *farm);
 int						ft_find_way(t_general *farm);
+void					ft_del_link(t_link *link);
+void					ft_lst_room_del(t_room_lst **alst);
 //int				ft_memclean(t_ptr *ptr);
 #endif

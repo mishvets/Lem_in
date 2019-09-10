@@ -15,22 +15,41 @@
 int ft_bfs(t_general *farm, t_link *queue)
 {
 	int			i;
-	t_room_lst	*crawler;
+	t_link		*crwl_link;
 
 	i = farm->num_rooms;
 	//обнуление уровня
 	while (i)
-		farm->r_arr[--i]->x = 0;
+		farm->r_arr[--i]->x_level = 0;
 //	crawler
 	while (i < farm->num_rooms && queue)
 	{
-		farm->r_arr[queue->num_room]->x
+		crwl_link = farm->r_arr[queue->num_room]->link;
+		while (crwl_link)
+		{
+			if (farm->visit[crwl_link->num_room] == 'F')
+			{
+				//add room if not visiting before
+				if(ft_link_add(&queue, crwl_link->num_room))
+					return (1);
+				//set level for new room in queue
+				farm->r_arr[crwl_link->num_room]->x_level = i;
+			}
+			crwl_link = crwl_link->next;
+		}
 		if(queue->num_room == ft_atoi(farm->start_room))
+		{
+			ft_del_link(queue);
 			break;
+		}
+		crwl_link = queue;
+		queue = queue->next;
+		free(crwl_link);
+		crwl_link = NULL;
 	}
 	return (0);
 }
-int	ft_check_ways(t_general *farm)
+int	ft_check_way(t_general *farm)
 {
 	t_way	*crawler_w;
 	t_link	*crawler_r;
@@ -50,12 +69,14 @@ int	ft_check_ways(t_general *farm)
 		}
 		crawler_w = crawler_w->next;
 	}
+	return (0);
 }
 
-int ft_find_ways(t_general *farm)
+int ft_find_way(t_general *farm)
 {
 	t_link *queue;
 
+	queue = NULL;
 	//create arr visited + add to queue finish room
 	if	(!(farm->visit = (char *)malloc(sizeof(char) * farm->num_rooms)) ||
 			ft_link_add(&queue, ft_atoi(farm->finish_room)))
@@ -63,14 +84,15 @@ int ft_find_ways(t_general *farm)
 	ft_memset(farm->visit, 'F', farm->num_rooms);
 	if (farm->ways)
 	{
-		ft_check_ways(farm);
-		while (farm->ways)
-		{
-
-		}
+		ft_check_way(farm);
+//		while (farm->ways)
+//		{
+//
+//		}
 	}
 	if (ft_bfs(farm, queue))
 	{
 		return (1);
 	}
+	return (0);
 }

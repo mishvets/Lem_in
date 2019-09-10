@@ -23,7 +23,7 @@ t_link	*ft_link_new(int num_room)
 	return (new);
 }
 
-int		ft_link_add(t_link **list, int r2)
+int		ft_link_add(t_link **list, int num_room)
 {
 	t_link *crawler;
 
@@ -32,16 +32,16 @@ int		ft_link_add(t_link **list, int r2)
 	{
 		while (crawler->next)
 		{
-			if (r2 == crawler->num_room)
+			if (num_room == crawler->num_room)
 				return (1);
 			crawler = crawler->next;
 		}
-		if (!(crawler->next = ft_link_new(r2)))
+		if (!(crawler->next = ft_link_new(num_room)))
 			return (1);
 	}
 	else
 	{
-		if (!(*list = ft_link_new(r2)))
+		if (!(*list = ft_link_new(num_room)))
 			return (1);
 	}
 	return (0);
