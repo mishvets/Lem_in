@@ -112,6 +112,16 @@ int 		ft_room_prepeare(t_room_lst **r_lst, t_general *farm)
 	while (crawler)
 	{
 		crawler->num_room = i++;
+		if (!ft_strcmp(crawler->name_room, farm->start_room))
+		{
+			ft_strdel(&farm->start_room);
+			farm->start_room = ft_itoa(crawler->num_room);
+		}
+		else if (!ft_strcmp(crawler->name_room, farm->finish_room))
+		{
+			ft_strdel(&farm->finish_room);
+			farm->finish_room = ft_itoa(crawler->num_room);
+		}
 		crawler = crawler->next;
 	}
 	farm->num_rooms = i;

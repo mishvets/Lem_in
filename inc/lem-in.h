@@ -31,6 +31,13 @@ typedef struct			s_room_lst
 	t_link				*link;
 }						t_room_lst;
 
+typedef struct 			s_way
+{
+	int 				len;
+	t_link				*next_point;
+	struct s_way		*next;
+}						t_way;
+
 typedef struct			s_general
 {
 	int					num_ants;
@@ -38,6 +45,8 @@ typedef struct			s_general
 	char				*start_room;
 	char 				*finish_room;
 	t_room_lst			**r_arr;
+	char				*visit;
+	t_way				*ways;
 }						t_general;
 
 //typedef struct	s_ptr
@@ -52,5 +61,6 @@ int						ft_room_read(char *line, t_room_lst **r_lst);
 int						ft_room_prepeare(t_room_lst **r_lst, t_general *farm);
 void					ft_lst_room_del(t_room_lst **alst);
 int						ft_link_read(char *line, t_general *farm);
+int						ft_find_way(t_general *farm);
 //int				ft_memclean(t_ptr *ptr);
 #endif

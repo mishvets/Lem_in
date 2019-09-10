@@ -31,13 +31,10 @@ static int ft_read_num_ants(char *line, int fd, t_general *farm)
 	return (0);
 }
 
-
-
 static int ft_commands(char **line, int fd, t_general *farm, t_room_lst **r_lst)
 {
 	if (!ft_strncmp(*line, "##start", 7))
 	{
-//		ft_printf("%s1\n", line);
 		ft_strdel(line);
 		if (farm->start_room == NULL && get_next_line(fd, line) > 0)
 		{
@@ -53,11 +50,9 @@ static int ft_commands(char **line, int fd, t_general *farm, t_room_lst **r_lst)
 			ft_printf("Error: only one vertex can named 'start'\n");
 			return (1);
 		}
-//			exit (ft_memclean(ptr));
 	}
 	else if (!ft_strncmp(*line, "##end", 5))
 	{
-//		ft_printf("%s2\n", line);
 		ft_strdel(line);
 		if (farm->finish_room == NULL && get_next_line(fd, line) > 0)
 		{
@@ -102,16 +97,13 @@ void ft_parserror(t_room_lst *r_lst, char **line)
 //			ft_printf("r_lst not empty!\n");
 			ft_lst_room_del(&r_lst);
 		}
-//		ft_strdel(&error);
 }
 
 int ft_parse(int fd, t_general *farm)
 {
 	int			link_start;
 	t_room_lst	*r_lst;
-//	t_room_lst	**r_arr;
 	char		*line;
-//	char 		*error;
 
 	line = NULL;
 	link_start = 0;
@@ -119,8 +111,8 @@ int ft_parse(int fd, t_general *farm)
 	farm->r_arr = NULL;
 	farm->start_room = NULL;
 	farm->finish_room = NULL;
-//	farm->room_name = NULL;
-//	error = ft_strnew(50);
+	farm->visit = NULL;
+	farm->ways = NULL;
 	if(ft_read_num_ants(line, fd, farm))
 		return (1);
 	ft_printf("num_ants = %i\n", farm->num_ants);//
@@ -133,7 +125,6 @@ int ft_parse(int fd, t_general *farm)
 			if(ft_room_prepeare(&r_lst, farm))
 				return (1);
 		}
-
 //		comment
 		if (!ft_strncmp(line, "#", 1))
 		{
@@ -163,25 +154,10 @@ int ft_parse(int fd, t_general *farm)
 					ft_parserror(r_lst, &line);
 					return (1);
 				}
-//				while (ft_strchr(line, "-") == NULL)
-//				{
-//					if (!ft_strncmp(line, "##", 2))
-//						if(ft_commands(line, fd, farm))
-//							return (1);
-////					обработка комнаты
-//				}
-//				if(ft_strncmp(line, "#", 1))
-//				{
-////				перенос вершин в массив
-//					link_start = 1;
-//				}
 			}
 		}
 		ft_strdel(&line);
-//		if (error)
-//			ft_parserror(error, r_lst);
 	}
 	ft_strdel(&line);
-//	ft_lst_room_del(&r_lst);
 	return (0);
 }
