@@ -17,12 +17,12 @@ static int		ft_memclean(t_general *farm)
 {
 	t_room_lst	*crawler;
 //	t_link		*crwl_link;
-	t_way		*crawler_w;
+//	t_way		*crawler_w;
 
 	if (farm->start_room)
 	{
 		ft_printf("start - %s\n", farm->start_room);
-//		ft_strdel(&farm->start_room);
+		ft_strdel(&farm->start_room);
 	}
 	if (farm->finish_room)
 	{
@@ -39,14 +39,6 @@ static int		ft_memclean(t_general *farm)
 			if(crawler->link)
 			{
 				ft_del_link(crawler->link);
-//				while (crawler->link)
-//				{
-//					crwl_link = crawler->link;
-//					crawler->link = crawler->link->next;
-//					ft_printf("%i --> ", crwl_link->num_room);//
-//					free(crwl_link);
-//					crwl_link = NULL;
-//				}
 			}
 			ft_printf(" NULL;\n");
 			ft_strdel(&crawler->name_room);
@@ -60,27 +52,7 @@ static int		ft_memclean(t_general *farm)
 	}
 	if (farm->ways)
 	{
-		while(farm->ways)
-		{
-			crawler_w = farm->ways;
-			farm->ways = farm->ways->next;
-			ft_printf("Way_len - %i: ", crawler_w->len);//
-			if (crawler_w->next_point)
-			{
-				ft_del_link(crawler_w->next_point);
-			}
-//			while(crawler_w->next_point)
-//			{
-//				crwl_link = crawler_w->next_point;
-//				crawler_w->next_point = crawler_w->next_point->next;
-//				ft_printf("%i --> ", crwl_link->num_room);//
-//				free(crwl_link);
-//				crwl_link = NULL;
-//			}
-			ft_printf("NULL;\n");//
-			free(crawler_w);
-			crawler_w = NULL;
-		}
+		ft_del_way(farm->ways);
 	}
 	system("leaks -q lem-in");
 	return (0);
@@ -112,6 +84,25 @@ void	ft_lst_room_del(t_room_lst **alst)
 		ft_strdel(&crawler->name_room);
 		free(crawler);
 		crawler = NULL;
+	}
+}
+
+void	ft_del_way(t_way *way)
+{
+	t_way	*crawler_w;
+
+	while(way)
+	{
+		crawler_w = way;
+		way = way->next;
+		ft_printf("Way_len - %i: ", crawler_w->len);//
+		if (crawler_w->next_point)
+		{
+			ft_del_link(crawler_w->next_point);
+		}
+		ft_printf("NULL;\n");//
+		free(crawler_w);
+		crawler_w = NULL;
 	}
 }
 
