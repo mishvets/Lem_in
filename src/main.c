@@ -77,7 +77,7 @@ static int		ft_memclean(t_general *farm)
 //				free(crwl_link);
 //				crwl_link = NULL;
 //			}
-			ft_printf(" NULL;\n");
+			ft_printf("NULL;\n");//
 			free(crawler_w);
 			crawler_w = NULL;
 		}
@@ -135,6 +135,7 @@ int		main(int argc, char **argv) //main(void)
 	}
 	if (ft_find_way(farm))
 	{
+		ft_printf("error\n");
 		exit(ft_memclean(farm));
 	}
 	ft_memclean(farm);

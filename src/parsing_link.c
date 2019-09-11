@@ -32,8 +32,8 @@ int		ft_link_add(t_link **list, int num_room)
 	{
 		while (crawler->next)
 		{
-			if (num_room == crawler->num_room)
-				return (1);
+			if (num_room == crawler->num_room)//the same room
+				return (2);
 			crawler = crawler->next;
 		}
 		if (!(crawler->next = ft_link_new(num_room)))
@@ -98,8 +98,8 @@ int		ft_link_read(char *line, t_general *farm)
 	else if (room1 >= 0 && room2 >= 0)
 	{
 		ft_strdeli(couple, 3);
-		if (ft_link_add(&farm->r_arr[room1]->link, room2) &&
-		ft_link_add(&farm->r_arr[room1]->link, room1))
+		if (ft_link_add(&farm->r_arr[room1]->link, room2) == 1 ||
+		ft_link_add(&farm->r_arr[room2]->link, room1) == 1)
 			return (1);
 	}
 	return (0);
