@@ -144,5 +144,11 @@ int ft_parse(int fd, t_general *farm)
 		ft_strdel(&line);
 	}
 	ft_strdel(&line);
+	if (!link_start)
+	{
+		ft_printf("Error: no links in the map.\n");
+		ft_parserror(r_lst, &line);
+		return (1);
+	}
 	return (0);
 }

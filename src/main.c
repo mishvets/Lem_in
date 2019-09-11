@@ -115,20 +115,20 @@ void	ft_lst_room_del(t_room_lst **alst)
 	}
 }
 
-int		main(int argc, char **argv) //main(void)
-//int		main(void)
+//int		main(int argc, char **argv) //main(void)
+int		main(void)
 {
 	int				fd;
 	t_general		*farm;
 
 	if (!(farm = (t_general *)ft_memalloc(sizeof(t_general))))
 		return (1);
-	if ((fd = open(argv[1], O_RDONLY)) < 0 || argc < 0) // del!
-	{
-		ft_printf("error read from file\n");
-		return 0;
-	}
-//	fd = 0;
+//	if ((fd = open(argv[1], O_RDONLY)) < 0 || argc < 0) // del!
+//	{
+//		ft_printf("error read from file\n");
+//		return 0;
+//	}
+	fd = 0;
 	if (ft_parse(fd, farm))
 	{
 		exit(ft_memclean(farm));
