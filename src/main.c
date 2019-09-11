@@ -47,13 +47,9 @@ static int		ft_memclean(t_general *farm)
 		}
 	}
 	if (farm->visit)
-	{
 		ft_strdel(&farm->visit);
-	}
 	if (farm->ways)
-	{
 		ft_del_way(farm->ways);
-	}
 	system("leaks -q lem-in");
 	return (0);
 }

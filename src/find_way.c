@@ -80,6 +80,8 @@ int ft_create_way(t_general *farm)
 	}
 	if(ft_way_add(farm, new_way, i))
 		return (1);
+	if (i == 1)
+		return (2);
 	return (0);
 }
 
@@ -136,7 +138,6 @@ int	ft_check_way(t_general *farm)
 	t_link	*crawler_r;
 
 	crawler_w = farm->ways;
-//	ft_memset(farm->visit, 'F', farm->num_rooms);
 //	while we have possible ways
 	while (crawler_w)
 	{
@@ -154,10 +155,31 @@ int	ft_check_way(t_general *farm)
 	return (0);
 }
 
+void	ft_choose_way(t_general *farm)
+{
+	int		coef;
+	int 	sum_len;
+	t_way	*crwl_ways;
+	int 	i;
+
+	sum_len = farm->ways->len;
+	coef = farm->num_ants + sum_len - 1;
+	i = 2;
+	crwl_ways = farm->ways;
+	while (crwl_ways->next &&
+	((farm->num_ants + sum_len + crwl_ways->next->len - 1) / i) < coef)
+	{
+		crwl_ways = crwl_ways->next;
+		coef = (farm->num_ants + sum_len + crwl_ways->len - 1) / i;
+		++i;
+	}
+	ft_del_way(crwl_ways->next);
+	crwl_ways->next = NULL;
+}
+
 int ft_find_way(t_general *farm)
 {
 	t_link *queue;
-//	int 	search_way;
 
 	//create arr visited
 	if	(!(farm->visit = (char *)malloc(sizeof(char) * farm->num_rooms)))
@@ -171,29 +193,22 @@ int ft_find_way(t_general *farm)
 		if	(ft_link_add(&queue, ft_atoi(farm->finish_room)))
 			return (1);
 		if (farm->ways)
-		{
 			ft_check_way(farm);
-		}
 		if (ft_bfs(farm, queue))
 		{
 			if (farm->visit[ft_atoi(farm->start_room)] == 'F' && !farm->ways)
-			{
 				ft_printf("Error: the farm doesn't have ways from start to end room.\n");
-			}
 			else
-				return (0);
+				break;
 			return (1);
 		}
-//		else if (ft_bfs(farm, queue) == 2)
-//		{
-//			if (!farm->ways)
-//			{
-//				ft_printf("Error: the farm doesn't have ways from start to end room.\n");
-//				return (1);
-//			}
-//			return (0);
-//		}
-		ft_create_way(farm);
+		if (ft_create_way(farm))
+		{
+			if (farm->ways->len == 1)
+				break;
+			return (1);
+		}
 	}
+	ft_choose_way(farm);
 	return (0);
 }

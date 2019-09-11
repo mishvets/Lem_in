@@ -65,5 +65,6 @@ int						ft_link_read(char *line, t_general *farm);
 int						ft_find_way(t_general *farm);
 void					ft_del_link(t_link *link);
 void					ft_lst_room_del(t_room_lst **alst);
+void					ft_del_way(t_way *way);
 //int				ft_memclean(t_ptr *ptr);
 #endif
