@@ -54,7 +54,7 @@ int ft_create_way(t_general *farm)
 
 	i = 0;
 	new_way = NULL;
-	num_room = ft_atoi(farm->start_room);
+	num_room = ft_atoi(farm->finish_room);
 	if (ft_link_add(&new_way, num_room))
 		return (1);
 	while (i++ < farm->num_rooms)
@@ -73,7 +73,7 @@ int ft_create_way(t_general *farm)
 		}
 		if(ft_link_add(&new_way, num_room))
 			return (1);
-		if (num_room == ft_atoi(farm->finish_room))
+		if (num_room == ft_atoi(farm->start_room))
 		{
 			break;
 		}
@@ -94,7 +94,7 @@ int ft_bfs(t_general *farm, t_link *queue)
 	//изменение уровня больше возможного
 	while (i)
 		farm->r_arr[--i]->x_level = farm->num_rooms + 10;
-	farm->r_arr[ft_atoi(farm->finish_room)]->x_level = 0;
+	farm->r_arr[ft_atoi(farm->start_room)]->x_level = 0;
 	while (i++ < farm->num_rooms && queue)
 	{
 		crwl_link = farm->r_arr[queue->num_room]->link;
@@ -112,7 +112,7 @@ int ft_bfs(t_general *farm, t_link *queue)
 			}
 			crwl_link = crwl_link->next;
 		}
-		if (queue->num_room == ft_atoi(farm->start_room))
+		if (queue->num_room == ft_atoi(farm->finish_room))
 		{
 			ft_printf("Queue: ");//
 			ft_del_link(queue);
@@ -123,9 +123,8 @@ int ft_bfs(t_general *farm, t_link *queue)
 		queue = queue->next;
 		free(crwl_link);
 		crwl_link = NULL;
-//		++i;
 	}
-	if (farm->visit[ft_atoi(farm->start_room)] == 'F')
+	if (farm->visit[ft_atoi(farm->finish_room)] == 'F')
 	{
 		return (1);
 	}
@@ -151,7 +150,7 @@ int	ft_check_way(t_general *farm)
 		}
 		crawler_w = crawler_w->next;
 	}
-	farm->visit[ft_atoi(farm->start_room)] = 'F';
+	farm->visit[ft_atoi(farm->finish_room)] = 'F';
 	return (0);
 }
 
@@ -188,16 +187,16 @@ int ft_find_way(t_general *farm)
 	while (1)
 	{
 		ft_memset(farm->visit, 'F', farm->num_rooms);
-		farm->visit[ft_atoi(farm->finish_room)] = 'T';
+		farm->visit[ft_atoi(farm->start_room)] = 'T';
 		queue = NULL;
 		//add to queue finish room
-		if	(ft_link_add(&queue, ft_atoi(farm->finish_room)))
+		if	(ft_link_add(&queue, ft_atoi(farm->start_room)))
 			return (-1);
 		if (farm->ways)
 			ft_check_way(farm);
 		if (ft_bfs(farm, queue))
 		{
-			if (farm->visit[ft_atoi(farm->start_room)] == 'F' && !farm->ways)
+			if (farm->visit[ft_atoi(farm->finish_room)] == 'F' && !farm->ways)
 				ft_printf("Error: the farm doesn't have ways from start to end room.\n");
 			else
 				break;

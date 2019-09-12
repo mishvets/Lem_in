@@ -30,24 +30,33 @@ int ft_one_way_move(int new_ant, t_way *way, t_general *farm)
 	//while not "start" room (crwl_l->next == NULL)
 	while (crwl_l->next)
 	{
-		if (crwl_l->num_room == ft_atoi(farm->start_room))
+		if (crwl_l->num_room == ft_atoi(farm->finish_room))
 		{
-			++farm->r_arr[ft_atoi(farm->start_room)]->y_numant;
+			if (farm->r_arr[crwl_l->next->num_room]->y_numant > 0)
+			{
+				++farm->r_arr[ft_atoi(farm->finish_room)]->y_numant;
+				ft_printf("L%i-%s ", farm->r_arr[crwl_l->next->num_room]->y_numant,
+						  farm->r_arr[crwl_l->num_room]->name_room);
+				farm->r_arr[crwl_l->next->num_room]->y_numant = -1;
+			}
+//			farm->r_arr[crwl_l->next->num_room]->y_numant = -1;
 		}
-		else if (crwl_l->next->num_room == ft_atoi(farm->finish_room) &&
-				 new_ant > 0)
+		else if (crwl_l->next->num_room == ft_atoi(farm->start_room))
 		{
-			--farm->r_arr[ft_atoi(farm->finish_room)]->y_numant;
-			farm->r_arr[crwl_l->num_room]->y_numant = new_ant;
+			if(new_ant > 0)
+			{
+				--farm->r_arr[ft_atoi(farm->start_room)]->y_numant;
+				farm->r_arr[crwl_l->num_room]->y_numant = new_ant;
+			}
 		}
 		else
 		{
 			farm->r_arr[crwl_l->num_room]->y_numant =
 					farm->r_arr[crwl_l->next->num_room]->y_numant;
-
+			farm->r_arr[crwl_l->next->num_room]->y_numant = -1;
 		}
-		farm->r_arr[crwl_l->next->num_room]->y_numant = -1;
-		ft_printf("L%i-%s ", farm->r_arr[crwl_l->num_room]->y_numant,
+		if (farm->r_arr[crwl_l->num_room]->y_numant > 0 && crwl_l->num_room != ft_atoi(farm->finish_room))
+			ft_printf("L%i-%s ", farm->r_arr[crwl_l->num_room]->y_numant,
 				  farm->r_arr[crwl_l->num_room]->name_room);
 		crwl_l = crwl_l->next;
 	}
@@ -59,16 +68,20 @@ void ft_transfer_ants(t_general *farm, int num_steps)
     t_way	*crwl_w;
     int 	num_ant;
 
-    while (num_steps--)
+    while (farm->r_arr[ft_atoi(farm->finish_room)]->y_numant != farm->num_ants)
 	{
 		crwl_w = farm->ways;
 		while (crwl_w)
 		{
-			num_ant = farm->num_ants - farm->r_arr[ft_atoi(farm->start_room)]->y_numant;
+			num_ant = -1;
 			if (num_steps >= crwl_w->len)
-				ft_one_way_move(num_ant, crwl_w, farm);
+			{
+				num_ant = farm->num_ants - farm->r_arr[ft_atoi(farm->start_room)]->y_numant + 1;
+			}
+			ft_one_way_move(num_ant, crwl_w, farm);
 			crwl_w = crwl_w->next;
 		}
+		num_steps--;
 		ft_printf("\n");
 	}
 }
