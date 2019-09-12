@@ -74,7 +74,7 @@ void ft_transfer_ants(t_general *farm, int num_steps)
 		while (crwl_w)
 		{
 			num_ant = -1;
-			if (num_steps >= crwl_w->len)
+			if (num_steps >= crwl_w->len && farm->r_arr[ft_atoi(farm->start_room)]->y_numant)
 			{
 				num_ant = farm->num_ants - farm->r_arr[ft_atoi(farm->start_room)]->y_numant + 1;
 			}
@@ -85,9 +85,3 @@ void ft_transfer_ants(t_general *farm, int num_steps)
 		ft_printf("\n");
 	}
 }
-
-//int ft_print_result(t_general *farm)
-//{
-//	while (i != farm->num_ants)
-//	ft_printf("L%i-%s", num_ant, farm->r_arr[farm->ways->next_point->num_room]->name_room);
-//}

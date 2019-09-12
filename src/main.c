@@ -102,8 +102,8 @@ void	ft_del_way(t_way *way)
 	}
 }
 
-int		main(int argc, char **argv) //main(void)
-//int		main(void)
+//int		main(int argc, char **argv) //main(void)
+int		main(void)
 {
 	int				fd;
 	int				num_steps;
@@ -111,18 +111,21 @@ int		main(int argc, char **argv) //main(void)
 
 	if (!(farm = (t_general *)ft_memalloc(sizeof(t_general))))
 		return (1);
-	if ((fd = open(argv[1], O_RDONLY)) < 0 || argc < 0) // del!
-	{
-		ft_printf("error read from file\n");
-		return 0;
-	}
-//	fd = 0;
+//	if ((fd = open(argv[1], O_RDONLY)) < 0 || argc < 0) // del!
+//	{
+//		ft_printf("error read from file\n");
+//		return 0;
+//	}
+	fd = 0;
 	if (ft_parse(fd, farm))
 	{
+		ft_printf("error\n");//
 		exit(ft_memclean(farm));
 	}
+	ft_printf("Parse ok\n");//
 	if ((num_steps = ft_find_way(farm)) < 0)
 	{
+		ft_printf("error\n");//
 		exit(ft_memclean(farm));
 	}
     if (num_steps == 1)
@@ -132,9 +135,12 @@ int		main(int argc, char **argv) //main(void)
     }
     else
 	{
+		ft_printf("Start transfer\n");//
 		ft_transfer_ants(farm, num_steps);
 	}
-	ft_memclean(farm);
+//	ft_memclean(farm);
 //	ft_lst_room_del(&farm->r_arr[0]);
+	ft_printf("num-steps: %i\n", num_steps);
+	system("leaks -q lem-in");
 	return (0);
 }

@@ -169,7 +169,8 @@ int	ft_choose_way(t_general *farm)
 	((farm->num_ants + sum_len + crwl_ways->next->len - 1) / i) < coef)
 	{
 		crwl_ways = crwl_ways->next;
-		coef = (farm->num_ants + sum_len + crwl_ways->len - 1) / i;
+		sum_len += crwl_ways->len;
+		coef = (farm->num_ants + sum_len - 1) / i;
 		++i;
 	}
 	ft_del_way(crwl_ways->next);

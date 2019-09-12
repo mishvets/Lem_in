@@ -114,11 +114,17 @@ int ft_parse(int fd, t_general *farm)
 		if (!ft_strncmp(line, "#", 1))
 		{
 			if (!ft_strncmp(line, "##", 2))
-				if(ft_commands(&line, fd, farm, &r_lst))
+			{
+				if (ft_commands(&line, fd, farm, &r_lst))
 				{
 					ft_parserror(r_lst, &line);
 					return (1);
 				}
+			}
+			else//
+				{//
+					ft_printf("%s\n", line);//
+				}//
 		}
 //		not comment
 		else
