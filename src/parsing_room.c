@@ -24,7 +24,7 @@ t_room_lst	*ft_lstnewroom(char *name, int x, int y)
 		return (NULL);
 	}
 	new->x_level = x;
-	new->y = y;
+	new->y_numant = y;
 	new->next = NULL;
 	new->link = NULL;
 	return (new);
@@ -64,7 +64,7 @@ int			ft_valid_room(char **tmp, t_room_lst *r_lst, char *line)
 			ft_printf("Error: vertex names must be unique.\n");
 			return (1);
 		}
-		if (ft_atoi(tmp[1]) == r_lst->x_level && ft_atoi(tmp[2]) == r_lst->y)
+		if (ft_atoi(tmp[1]) == r_lst->x_level && ft_atoi(tmp[2]) == r_lst->y_numant)
 		{
 			ft_printf("Error: vertex coordinates must be unique.\n");
 			return (1);
@@ -112,15 +112,18 @@ int 		ft_room_prepeare(t_room_lst **r_lst, t_general *farm)
 	while (crawler)
 	{
 		crawler->num_room = i++;
+		crawler->y_numant = -1;
 		if (!ft_strcmp(crawler->name_room, farm->start_room))
 		{
 			ft_strdel(&farm->start_room);
 			farm->start_room = ft_itoa(crawler->num_room);
+			crawler->y_numant = farm->num_ants;
 		}
 		else if (!ft_strcmp(crawler->name_room, farm->finish_room))
 		{
 			ft_strdel(&farm->finish_room);
 			farm->finish_room = ft_itoa(crawler->num_room);
+			crawler->y_numant = 0;
 		}
 		crawler = crawler->next;
 	}

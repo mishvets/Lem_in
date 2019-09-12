@@ -155,7 +155,7 @@ int	ft_check_way(t_general *farm)
 	return (0);
 }
 
-void	ft_choose_way(t_general *farm)
+int	ft_choose_way(t_general *farm)
 {
 	int		coef;
 	int 	sum_len;
@@ -175,6 +175,7 @@ void	ft_choose_way(t_general *farm)
 	}
 	ft_del_way(crwl_ways->next);
 	crwl_ways->next = NULL;
+    return (coef);
 }
 
 int ft_find_way(t_general *farm)
@@ -183,7 +184,7 @@ int ft_find_way(t_general *farm)
 
 	//create arr visited
 	if	(!(farm->visit = (char *)malloc(sizeof(char) * farm->num_rooms)))
-		return (1);
+		return (-1);
 	while (1)
 	{
 		ft_memset(farm->visit, 'F', farm->num_rooms);
@@ -191,7 +192,7 @@ int ft_find_way(t_general *farm)
 		queue = NULL;
 		//add to queue finish room
 		if	(ft_link_add(&queue, ft_atoi(farm->finish_room)))
-			return (1);
+			return (-1);
 		if (farm->ways)
 			ft_check_way(farm);
 		if (ft_bfs(farm, queue))
@@ -200,15 +201,14 @@ int ft_find_way(t_general *farm)
 				ft_printf("Error: the farm doesn't have ways from start to end room.\n");
 			else
 				break;
-			return (1);
+			return (-1);
 		}
 		if (ft_create_way(farm))
 		{
 			if (farm->ways->len == 1)
-				break;
-			return (1);
+				return (1);
+			return (-1);
 		}
 	}
-	ft_choose_way(farm);
-	return (0);
+	return (ft_choose_way(farm));
 }

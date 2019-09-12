@@ -13,7 +13,7 @@ add_executable(Lem_in
         src/parsing_room.c
         src/parsing_link.c
         src/find_way.c
-        src/print_result.c
+        src/ants_move.c
         )
 
 link_libraries(libft/libft.a)

@@ -26,7 +26,7 @@ typedef struct			s_room_lst
 	int					num_room;
 	char				*name_room;
 	int 				x_level;
-	int					y;
+	int					y_numant;
 	struct s_room_lst	*next;
 	t_link				*link;
 }						t_room_lst;
@@ -66,5 +66,7 @@ int						ft_find_way(t_general *farm);
 void					ft_del_link(t_link *link);
 void					ft_lst_room_del(t_room_lst **alst);
 void					ft_del_way(t_way *way);
+void                    ft_transfer_ants(t_general *farm, int num_steps);
+void                    ft_move_all_ants(t_general *farm);
 //int				ft_memclean(t_ptr *ptr);
 #endif

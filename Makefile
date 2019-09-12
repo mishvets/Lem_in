@@ -28,7 +28,7 @@ SRC             += $(SRC_DIR)parsing.c
 SRC             += $(SRC_DIR)parsing_room.c
 SRC             += $(SRC_DIR)parsing_link.c
 SRC             += $(SRC_DIR)find_way.c
-SRC             += $(SRC_DIR)print_result.c
+SRC             += $(SRC_DIR)ants_move.c
 
 # project object files
 

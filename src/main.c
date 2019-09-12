@@ -76,7 +76,7 @@ void	ft_lst_room_del(t_room_lst **alst)
 	{
 		crawler = (*alst);
 		*alst = (*alst)->next;
-		ft_printf("Name: %s; n_room - %i; x_level - %i; y - %i. -->\n", crawler->name_room, crawler->num_room, crawler->x_level, crawler->y);//
+		ft_printf("Name: %s; n_room - %i; x_level - %i; y_numant - %i. -->\n", crawler->name_room, crawler->num_room, crawler->x_level, crawler->y_numant);//
 		ft_strdel(&crawler->name_room);
 		free(crawler);
 		crawler = NULL;
@@ -102,28 +102,37 @@ void	ft_del_way(t_way *way)
 	}
 }
 
-//int		main(int argc, char **argv) //main(void)
-int		main(void)
+int		main(int argc, char **argv) //main(void)
+//int		main(void)
 {
 	int				fd;
+	int				num_steps;
 	t_general		*farm;
 
 	if (!(farm = (t_general *)ft_memalloc(sizeof(t_general))))
 		return (1);
-//	if ((fd = open(argv[1], O_RDONLY)) < 0 || argc < 0) // del!
-//	{
-//		ft_printf("error read from file\n");
-//		return 0;
-//	}
-	fd = 0;
+	if ((fd = open(argv[1], O_RDONLY)) < 0 || argc < 0) // del!
+	{
+		ft_printf("error read from file\n");
+		return 0;
+	}
+//	fd = 0;
 	if (ft_parse(fd, farm))
 	{
 		exit(ft_memclean(farm));
 	}
-	if (ft_find_way(farm))
+	if ((num_steps = ft_find_way(farm)) < 0)
 	{
-		ft_printf("error\n");
 		exit(ft_memclean(farm));
+	}
+    if (num_steps == 1)
+    {
+//        move all ants
+		ft_move_all_ants(farm);
+    }
+    else
+	{
+		ft_transfer_ants(farm, num_steps);
 	}
 	ft_memclean(farm);
 //	ft_lst_room_del(&farm->r_arr[0]);
