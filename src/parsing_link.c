@@ -69,7 +69,8 @@ int		ft_valid_link(t_general *farm, int *room1, int *room2, char **couple)
 	}
 	if (*room1 < 0 || *room2 < 0)
 	{
-		ft_printf("Error: room in this link doesn't exist '%s-%s'.\n",
+		if (farm->flag & 2)
+			ft_printf("Error: room in this link doesn't exist '%s-%s'.\n",
 				couple[0], couple[1]);
 		return (1);
 	}
@@ -86,7 +87,8 @@ int		ft_link_read(char *line, t_general *farm)
 	room2 = -1;
 	if (ft_cntwrd(line, '-') != 2 || ft_cntchr(line, '-') != 1)
 	{
-		ft_printf("Error: bad link '%s'.\n", line);
+		if (farm->flag & 2)
+			ft_printf("Error: bad link '%s'.\n", line);
 		return (1);
 	}
 	couple = ft_strsplit(line, '-');
@@ -95,9 +97,9 @@ int		ft_link_read(char *line, t_general *farm)
 		ft_strdeli(couple, 3);
 		return (1);
 	}
-	else if (room1 >= 0 && room2 >= 0)
+	ft_strdeli(couple, 3);
+	if (room1 >= 0 && room2 >= 0)
 	{
-		ft_strdeli(couple, 3);
 		if (ft_link_add(&farm->r_arr[room1]->link, room2) == 1 ||
 		ft_link_add(&farm->r_arr[room2]->link, room1) == 1)
 			return (1);

@@ -14,9 +14,12 @@
 
 void    ft_move_all_ants(t_general *farm)
 {
-	while (farm->num_ants)
+	int i;
+
+	i = 0;
+	while (i < farm->num_ants)
 	{
-		ft_printf("L%i-%s ", farm->num_ants--,
+		ft_printf("L%i-%s ", ++i,
 				farm->r_arr[ft_atoi(farm->finish_room)]->name_room);
 	}
 	ft_printf("\n");

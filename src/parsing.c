@@ -12,20 +12,54 @@
 
 #include "../inc/lem-in.h"
 
+int			ft_atoi_ants(const char *strptr)
+{
+	size_t					i;
+	unsigned long int	num;
+
+	i = 0;
+	num = 0;
+	while (ft_isspace(strptr[i]))
+		++i;
+	if (strptr[i] == '+')
+		++i;
+	else if (strptr[i] == '-')
+		return (-1);
+	while (ft_isdigit(strptr[i]))
+		num = num * 10 + strptr[i++] - '0';
+	if (num > 2147483647 || i != ft_strlen(strptr) || i > 10)
+		return (-1);
+	return (num);
+}
+
 static int ft_read_num_ants(char *line, int fd, t_general *farm)
 {
+	size_t i;
+
+	i = 0;
 	if (get_next_line(fd, &line) < 0)
 		return (1);
+	ft_printf("%s\n", line);
 	while (!ft_strncmp(line, "#", 1) && ft_strncmp(line, "##", 2))
 	{
 		ft_strdel(&line);
 		get_next_line(fd, &line);
+		ft_printf("%s\n", line);
 	}
-	farm->num_ants = ft_atoi(line);
+//	while (ft_isdigit(line[i]))
+//		i++;
+//	if (i != ft_strlen(line))
+//	{
+//		if (farm->flag & 2)
+//			ft_printf("Error: incorrect number of ants '%s'.\n", line);
+//		return (1);
+//	}
+	farm->num_ants = ft_atoi_ants(line);
 	ft_strdel(&line);
 	if (farm->num_ants <= 0)
 	{
-		ft_printf("Error: the number of ants must be > 0.");
+		if (farm->flag & 2)
+			ft_printf("Error: the number of ants must be > 0 and < 2147483648.\n");
 		return (1);
 	}
 	return (0);
@@ -33,12 +67,13 @@ static int ft_read_num_ants(char *line, int fd, t_general *farm)
 
 static int ft_commands(char **line, int fd, t_general *farm, t_room_lst **r_lst)
 {
-	if (!ft_strncmp(*line, "##start", 7))
+	if (!ft_strcmp(*line, "##start"))
 	{
 		ft_strdel(line);
 		if (farm->start_room == NULL && get_next_line(fd, line) > 0)
 		{
-			if (!ft_room_read(*line, r_lst))
+			ft_printf("%s\n", *line);
+			if (!ft_room_read(*line, r_lst, farm))
 			{
 				if ((farm->start_room = ft_strsub(*line, 0, (ft_strchr(*line, ' ') - *line))))
 					return (0);
@@ -47,16 +82,18 @@ static int ft_commands(char **line, int fd, t_general *farm, t_room_lst **r_lst)
 		}
 		else
 		{
-			ft_printf("Error: only one vertex can named 'start'\n");
+			if (farm->flag & 2)
+				ft_printf("Error: only one vertex can named 'start'\n");
 			return (1);
 		}
 	}
-	else if (!ft_strncmp(*line, "##end", 5))
+	else if (!ft_strcmp(*line, "##end"))
 	{
 		ft_strdel(line);
 		if (farm->finish_room == NULL && get_next_line(fd, line) > 0)
 		{
-			if (!ft_room_read(*line, r_lst))
+			ft_printf("%s\n", *line);
+			if (!ft_room_read(*line, r_lst, farm))
 			{
 				if ((farm->finish_room = ft_strsub(*line, 0, (ft_strchr(*line, ' ') - *line))))
 					return (0);
@@ -65,23 +102,21 @@ static int ft_commands(char **line, int fd, t_general *farm, t_room_lst **r_lst)
 		}
 		else
 		{
-			ft_printf("Error: only one vertex can named 'end'.\n");
+			if (farm->flag & 2)
+				ft_printf("Error: only one vertex can named 'end'.\n");
 			return (1);
 		}
 	}
 	return (0);
 }
 
-void ft_parserror(t_room_lst *r_lst, char **line)
+int ft_parserror(t_room_lst *r_lst, char **line)
 {
-//		ft_printf("%s\n", error);
 		if (line)
 			ft_strdel(line);
 		if (r_lst)
-		{
-//			ft_printf("r_lst not empty!\n");
 			ft_lst_room_del(&r_lst);
-		}
+	return (1);
 }
 
 int ft_parse(int fd, t_general *farm)
@@ -93,17 +128,11 @@ int ft_parse(int fd, t_general *farm)
 	line = NULL;
 	link_start = 0;
 	r_lst = NULL;
-	farm->r_arr = NULL;
-	farm->start_room = NULL;
-	farm->finish_room = NULL;
-	farm->visit = NULL;
-	farm->ways = NULL;
 	if(ft_read_num_ants(line, fd, farm))
 		return (1);
-	ft_printf("num_ants = %i\n", farm->num_ants);//
-
 	while (get_next_line(fd, &line) > 0)
 	{
+		ft_printf("%s\n", line);
 		if (ft_strchr(line, '-') && ft_strncmp(line, "#", 1) && !link_start) // not comment with '-'
 		{
 			link_start = 1;
@@ -116,15 +145,10 @@ int ft_parse(int fd, t_general *farm)
 			if (!ft_strncmp(line, "##", 2))
 			{
 				if (ft_commands(&line, fd, farm, &r_lst))
-				{
-					ft_parserror(r_lst, &line);
-					return (1);
-				}
+					return (ft_parserror(r_lst, &line));
 			}
-			else//
-				{//
-					ft_printf("%s\n", line);//
-				}//
+			else if (farm->flag & 4)
+					ft_printf("%s\n", line);
 		}
 //		not comment
 		else
@@ -132,29 +156,23 @@ int ft_parse(int fd, t_general *farm)
 			if (link_start)
 			{
 				if (ft_link_read(line, farm))
-				{
-					ft_parserror(r_lst, &line);
-					return (1);
-				}
+					return (ft_parserror(r_lst, &line));
 			}
-
 			else
 			{
-				if (ft_room_read(line, &r_lst))
-				{
-					ft_parserror(r_lst, &line);
-					return (1);
-				}
+				if (ft_room_read(line, &r_lst, farm))
+					return (ft_parserror(r_lst, &line));
 			}
 		}
 		ft_strdel(&line);
 	}
+	ft_printf("\n");
 	ft_strdel(&line);
 	if (!link_start)
 	{
-		ft_printf("Error: no links in the map.\n");
-		ft_parserror(r_lst, &line);
-		return (1);
+		if (farm->flag & 2)
+			ft_printf("Error: no links in the map.\n");
+		return (ft_parserror(r_lst, &line));
 	}
 	return (0);
 }

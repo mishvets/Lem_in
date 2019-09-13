@@ -114,9 +114,7 @@ int ft_bfs(t_general *farm, t_link *queue)
 		}
 		if (queue->num_room == ft_atoi(farm->finish_room))
 		{
-			ft_printf("Queue: ");//
-			ft_del_link(queue);
-			ft_printf("NULL;\n");//
+			ft_del_link(queue, 0);
 			break;
 		}
 		crwl_link = queue;
@@ -173,9 +171,12 @@ int	ft_choose_way(t_general *farm)
 		coef = (farm->num_ants + sum_len - 1) / i;
 		++i;
 	}
-	ft_del_way(crwl_ways->next);
-	crwl_ways->next = NULL;
-    return (coef);
+	if (!(farm->flag & 1))
+	{
+		ft_del_way(crwl_ways->next, farm->flag);
+		crwl_ways->next = NULL;
+	}
+	return (coef);
 }
 
 int ft_find_way(t_general *farm)
@@ -197,7 +198,7 @@ int ft_find_way(t_general *farm)
 			ft_check_way(farm);
 		if (ft_bfs(farm, queue))
 		{
-			if (farm->visit[ft_atoi(farm->finish_room)] == 'F' && !farm->ways)
+			if (farm->visit[ft_atoi(farm->finish_room)] == 'F' && !farm->ways && farm->flag & 2)
 				ft_printf("Error: the farm doesn't have ways from start to end room.\n");
 			else
 				break;
